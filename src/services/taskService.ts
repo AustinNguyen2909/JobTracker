@@ -23,7 +23,7 @@ interface FirestoreTaskDoc {
   description: string;
   type: TaskType;
   tags: string[];
-  deadline: Timestamp | string | null;
+  deadline: string | null;
   priority: Priority;
   estimationTime: number | null;
   links: string[];
@@ -43,7 +43,8 @@ function docToTask(docSnap: DocumentSnapshot<DocumentData>): Task {
     tags: data.tags || [],
     deadline: data.deadline
       ? data.deadline instanceof Timestamp
-        ? data.deadline.toDate().toISOString().split("T")[0]
+        // Legacy: convert old Timestamps using local date to avoid timezone shift
+        ? `${data.deadline.toDate().getFullYear()}-${String(data.deadline.toDate().getMonth() + 1).padStart(2, '0')}-${String(data.deadline.toDate().getDate()).padStart(2, '0')}`
         : data.deadline
       : "",
     priority: data.priority || "medium",
@@ -76,9 +77,7 @@ function taskToDoc(task: TaskFormData): FirestoreTaskDoc {
     isCompleted: task.isCompleted || false,
     subtasks: task.subtasks || [],
     updatedAt: serverTimestamp(),
-    deadline: task.deadline
-      ? Timestamp.fromDate(new Date(task.deadline + "T00:00:00"))
-      : null,
+    deadline: task.deadline || null,
   };
 
   return data;
