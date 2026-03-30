@@ -11,11 +11,10 @@ interface PriorityOption {
 }
 
 const filters: FilterOption[] = [
-  { id: 'all', label: 'All' },
-  { id: 'active', label: 'Active' },
-  { id: 'completed', label: 'Completed' },
   { id: 'upcoming', label: 'Upcoming' },
+  { id: 'completed', label: 'Completed' },
   { id: 'past', label: 'Past Due' },
+  { id: 'all', label: 'All' },
 ];
 
 const priorities: PriorityOption[] = [
