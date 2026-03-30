@@ -113,7 +113,8 @@ export async function createTask(task: TaskFormData): Promise<Task> {
 export async function updateTask(task: Task): Promise<Task> {
   const { id, ...rest } = task;
   const data = taskToDoc(rest);
-  await updateDoc(doc(db, TASKS_COLLECTION, id), data as unknown as Record<string, unknown>);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await updateDoc(doc(db, TASKS_COLLECTION, id), data as any);
   return task;
 }
 
