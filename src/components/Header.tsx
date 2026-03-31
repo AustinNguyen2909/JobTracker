@@ -38,8 +38,8 @@ export default function Header({
   };
 
   const tabs: { id: TabId; label: string }[] = [
-    { id: 'personal', label: 'Personal' },
     { id: 'work', label: 'Work' },
+    { id: 'personal', label: 'Personal' },
   ];
 
   return (

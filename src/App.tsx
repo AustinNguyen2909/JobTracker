@@ -28,7 +28,7 @@ function AppContent() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<TabId>("personal");
+  const [activeTab, setActiveTab] = useState<TabId>("work");
   const [activeFilter, setActiveFilter] = useState<FilterId>("upcoming");
   const [activePriority, setActivePriority] = useState<PriorityFilterId>("all");
   const [searchQuery, setSearchQuery] = useState("");

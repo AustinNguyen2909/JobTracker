@@ -86,7 +86,21 @@ function taskToDoc(task: TaskFormData): FirestoreTaskDoc {
 export async function fetchTasks(): Promise<Task[]> {
   const q = query(collection(db, TASKS_COLLECTION), orderBy("createdAt", "desc"));
   const snapshot = await getDocs(q);
-  return snapshot.docs.map(docToTask);
+  const tasks = snapshot.docs.map(docToTask);
+
+  // Sort: tasks with deadline first (ascending by date), then tasks without deadline (by createdAt desc)
+  return tasks.sort((a, b) => {
+    const aDeadline = a.deadline || "";
+    const bDeadline = b.deadline || "";
+
+    // Both have deadlines → sort ascending (earliest first)
+    if (aDeadline && bDeadline) return aDeadline.localeCompare(bDeadline);
+    // Only one has a deadline → it comes first
+    if (aDeadline && !bDeadline) return -1;
+    if (!aDeadline && bDeadline) return 1;
+    // Neither has a deadline → sort by createdAt descending (newest first)
+    return b.createdAt.localeCompare(a.createdAt);
+  });
 }
 
 export async function createTask(task: TaskFormData): Promise<Task> {
